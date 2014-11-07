@@ -29,6 +29,38 @@ Features
 Wireframes
 ----------
 
+First screen when starting the app:
+
+Menu screen:
+
+![Menu screen](https://raw.githubusercontent.com/6366295/uva_app_studio_project/3239a245c6f6435e1e4fb2a710b683928259d4e6/doc/images/menuscreen.png)
+
+The screen above connects to the following three screens:
+
+Choose level screen:
+
+![Choose level screen](https://raw.githubusercontent.com/6366295/uva_app_studio_project/3239a245c6f6435e1e4fb2a710b683928259d4e6/doc/images/chooselevelscreen.png)
+
+Highscore screen:
+
+![Highscore screen](https://raw.githubusercontent.com/6366295/uva_app_studio_project/3239a245c6f6435e1e4fb2a710b683928259d4e6/doc/images/highscorescreen.png)
+
+Tutorial screen:
+
+![Tutorial screen](https://raw.githubusercontent.com/6366295/uva_app_studio_project/3239a245c6f6435e1e4fb2a710b683928259d4e6/doc/images/tutorialscreen.png)
+
+The Choose level screen connects to the game screen
+
+Game screen:
+
+![Game screen](https://raw.githubusercontent.com/6366295/uva_app_studio_project/3239a245c6f6435e1e4fb2a710b683928259d4e6/doc/images/gamescreen.png)
+
+The game screen can be paused
+
+Pause screen:
+
+![Pause screen](https://raw.githubusercontent.com/6366295/uva_app_studio_project/3239a245c6f6435e1e4fb2a710b683928259d4e6/doc/images/pausescreen.png)
+
 Frameworks, libraries
 ---------------------
 
