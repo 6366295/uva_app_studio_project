@@ -8,21 +8,21 @@ import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
 
-public class PlayerModel {
+public class EnemyModel {
 
     private final String vertexShaderCode =
             "uniform mat4 uMVPMatrix;" +
-            "attribute vec4 vPosition;" +
-            "void main() {" +
-            "    gl_Position = uMVPMatrix * vPosition;" +
-            "}";
+                    "attribute vec4 vPosition;" +
+                    "void main() {" +
+                    "    gl_Position = uMVPMatrix * vPosition;" +
+                    "}";
 
     private final String fragmentShaderCode =
             "precision mediump float;" +
-            "uniform vec4 vColor;" +
-            "void main() {" +
-            "    gl_FragColor = vColor;" +
-            "}";
+                    "uniform vec4 vColor;" +
+                    "void main() {" +
+                    "    gl_FragColor = vColor;" +
+                    "}";
 
     private final FloatBuffer vertexBuffer;
     private final ShortBuffer drawListBuffer;
@@ -34,11 +34,11 @@ public class PlayerModel {
 
     // number of coordinates per vertex in this array
     static final int COORDS_PER_VERTEX = 3;
-    static float playerCoords[] = {
-            285f,  925f, 0.0f,   // top left
-            285f, 1075f, 0.0f,   // bottom left
-            435f, 1075f, 0.0f,   // bottom right
-            435f,  925f, 0.0f }; // top right
+    static float enemyCoords[] = {
+            310f,  950f, 0.0f,   // top left
+            310f, 1050f, 0.0f,   // bottom left
+            410f, 1050f, 0.0f,   // bottom right
+            410f,  950f, 0.0f }; // top right
 
     private final short drawOrder[] = { 0, 1, 2, 0, 2, 3 }; // order to draw vertices
 
@@ -49,14 +49,14 @@ public class PlayerModel {
     /**
      * Sets up the drawing object data for use in an OpenGL ES context.
      */
-    public PlayerModel() {
+    public EnemyModel() {
         // initialize vertex byte buffer for shape coordinates
         ByteBuffer bb = ByteBuffer.allocateDirect(
                 // (# of coordinate values * 4 bytes per float)
-                playerCoords.length * 4);
+                enemyCoords.length * 4);
         bb.order(ByteOrder.nativeOrder());
         vertexBuffer = bb.asFloatBuffer();
-        vertexBuffer.put(playerCoords);
+        vertexBuffer.put(enemyCoords);
         vertexBuffer.position(0);
 
         // initialize byte buffer for the draw list

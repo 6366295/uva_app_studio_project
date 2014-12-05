@@ -3,7 +3,6 @@ package nl.uva.projecttds;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
-import android.os.SystemClock;
 import android.util.Log;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -18,6 +17,11 @@ public class GameGLRenderer implements GLSurfaceView.Renderer
     public PlayerLogic playerLogic;
     public BulletModel bulletModel;
     public BulletLogic bulletLogic;
+    public EnemyModel enemyModel;
+    public EnemyLogic enemyLogic;
+    public EnemyLogic enemyLogic2;
+    public EnemyLogic enemyLogic3;
+    public EnemyLogic enemyLogic4;
 
     // mMVPMatrix is an abbreviation for "Model View Projection Matrix"
     private final float[] mMVPMatrix = new float[16];
@@ -37,6 +41,11 @@ public class GameGLRenderer implements GLSurfaceView.Renderer
         playerLogic = new PlayerLogic();
         bulletModel = new BulletModel();
         bulletLogic = new BulletLogic();
+        enemyModel = new EnemyModel();
+        enemyLogic = new EnemyLogic();
+        enemyLogic2 = new EnemyLogic();
+        enemyLogic3 = new EnemyLogic();
+        enemyLogic4 = new EnemyLogic();
     }
 
     @Override
@@ -50,65 +59,94 @@ public class GameGLRenderer implements GLSurfaceView.Renderer
 
         // Calculate the projection and view transformation
         Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
-        //Matrix.translateM(mMVPMatrix, 0, 0, -0.9f, 0);
 
         // Draw player
-        Matrix.translateM(mMVPMatrix, 0, pointX, pointY, 0);
-        playerModel.draw(mMVPMatrix);
+        playerLogic.animatePlayer(mMVPMatrix, playerModel, pointX, pointY);
 
-        if(playerLogic.selected == 0 || bulletLogic.spawned == 0 || bulletLogic.spawned2 == 0)
+        boolean a = bulletLogic.bulletHit(enemyLogic);
+        if(a == true)
         {
-            if(bulletLogic.spawned == 1 && playerLogic.selected == 0)
+            if(enemyLogic.hit == 9)
             {
-                bulletLogic.posX = playerLogic.playerX;
-                bulletLogic.posY = playerLogic.playerY;
-                bulletLogic.spawned = 0;
+                playerLogic.score += enemyLogic.score;
             }
-
-            if(bulletLogic.spawned == 0)
-            {
-
-                bulletLogic.progress += -100;
-
-                if(bulletLogic.progress < -1280)
-                {
-                    bulletLogic.spawned = 1;
-                    bulletLogic.progress = 0;
-                }
-                else
-                {
-                    Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
-                    Matrix.translateM(mMVPMatrix, 0, -360.0f, -1000.0f, 0);
-                    Matrix.translateM(mMVPMatrix, 0, bulletLogic.posX, bulletLogic.posY, 0);
-                    Matrix.translateM(mMVPMatrix, 0, 0, bulletLogic.progress, 0);
-                    bulletModel.draw(mMVPMatrix);
-                }
-            }
-
-            if(bulletLogic.progress < -200 || bulletLogic.spawned2 == 0) {
-                if (bulletLogic.spawned2 == 1 && playerLogic.selected == 0) {
-                    bulletLogic.posX2 = playerLogic.playerX;
-                    bulletLogic.posY2 = playerLogic.playerY;
-                    bulletLogic.spawned2 = 0;
-                }
-
-                if (bulletLogic.spawned2 == 0) {
-
-                    bulletLogic.progress2 += -100;
-
-                    if (bulletLogic.progress2 < -1280) {
-                        bulletLogic.spawned2 = 1;
-                        bulletLogic.progress2 = 0;
-                    } else {
-                        Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
-                        Matrix.translateM(mMVPMatrix, 0, -360.0f, -1000.0f, 0);
-                        Matrix.translateM(mMVPMatrix, 0, bulletLogic.posX2, bulletLogic.posY2, 0);
-                        Matrix.translateM(mMVPMatrix, 0, 0, bulletLogic.progress2, 0);
-                        bulletModel.draw(mMVPMatrix);
-                    }
-                }
-            }
+            bulletLogic.hit = true;
         }
+        a = bulletLogic.bulletHit(enemyLogic2);
+        if(a == true)
+        {
+            if(enemyLogic2.hit == 9)
+                playerLogic.score += enemyLogic2.score;
+            bulletLogic.hit = true;
+        }
+        a = bulletLogic.bulletHit(enemyLogic3);
+        if(a == true)
+        {
+            if(enemyLogic3.hit == 9)
+                playerLogic.score += enemyLogic3.score;
+            bulletLogic.hit = true;
+        }
+        a = bulletLogic.bulletHit(enemyLogic4);
+        if(a == true)
+        {
+            if(enemyLogic4.hit == 9)
+                playerLogic.score += enemyLogic4.score;
+            bulletLogic.hit = true;
+        }
+
+        enemyLogic.checkIfHit(playerLogic);
+        enemyLogic2.checkIfHit(playerLogic);
+        enemyLogic3.checkIfHit(playerLogic);
+        enemyLogic4.checkIfHit(playerLogic);
+
+        Log.v(TAG, "hp=" + playerLogic.hp);
+        if(playerLogic.hit == 1)
+        {
+            playerLogic.hp -= 1;
+            playerLogic.hit = 0;
+        }
+
+        if((enemyLogic.hit > 9 || enemyLogic.hitplayer == true) && (enemyLogic2.hit > 9 || enemyLogic2.hitplayer == true) &&
+                (enemyLogic3.hit > 9 || enemyLogic3.hitplayer == true) && (enemyLogic4.hit > 9 || enemyLogic4.hitplayer == true))
+        {
+            enemyLogic.resetEnemy();
+            enemyLogic2.resetEnemy();
+            enemyLogic3.resetEnemy();
+            enemyLogic4.resetEnemy();
+        }
+
+        Log.v(TAG, "score=" + playerLogic.score);
+        //Log.v(TAG, "enemx=" + enemyLogic.posX);
+        //Log.v(TAG, "enemy=" + enemyLogic.posY);
+        //Log.v(TAG, "bulletx=" + bulletLogic.posX);
+        //Log.v(TAG, "bullety=" + bulletLogic.posY);
+        //Log.v(TAG, "playerx=" + playerLogic.playerX);
+        //Log.v(TAG, "playery=" + playerLogic.playerY);
+
+        // Draw bullet
+        Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
+        bulletLogic.animateBullet(bulletModel, mMVPMatrix, playerLogic.selected, playerLogic.playerX, playerLogic.playerY, 50);
+
+        // Draw enemy
+        Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
+        enemyLogic.width = 100;
+        enemyLogic.height = 100;
+        enemyLogic.animateEnemy(enemyModel, mMVPMatrix, -50, 100, 10, 60, 60, 120);
+
+        Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
+        enemyLogic2.width = 100;
+        enemyLogic2.height = 100;
+        enemyLogic2.animateEnemy(enemyModel, mMVPMatrix, -50, 100, 10, 180, 60, 300);
+
+        Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
+        enemyLogic3.width = 100;
+        enemyLogic3.height = 100;
+        enemyLogic3.animateEnemy(enemyModel, mMVPMatrix, 770, 100, -10, 60, 60, -120);
+
+        Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
+        enemyLogic4.width = 100;
+        enemyLogic4.height = 100;
+        enemyLogic4.animateEnemy(enemyModel, mMVPMatrix, 770, 100, -10, 180, 60, -300);
     }
 
     @Override

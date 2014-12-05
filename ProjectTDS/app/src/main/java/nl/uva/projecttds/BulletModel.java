@@ -34,11 +34,11 @@ public class BulletModel {
 
     // number of coordinates per vertex in this array
     static final int COORDS_PER_VERTEX = 3;
-    static float playerCoords[] = {
-            310f,  900f, 0.0f,   // top left
-            310f, 1100f, 0.0f,   // bottom left
-            410f, 1100f, 0.0f,   // bottom right
-            410f,  900f, 0.0f }; // top right
+    static float bulletCoords[] = {
+            350f,  950f, 0.0f,   // top left
+            350f, 1050f, 0.0f,   // bottom left
+            370f, 1050f, 0.0f,   // bottom right
+            370f,  950f, 0.0f }; // top right
 
     private final short drawOrder[] = { 0, 1, 2, 0, 2, 3 }; // order to draw vertices
 
@@ -53,10 +53,10 @@ public class BulletModel {
         // initialize vertex byte buffer for shape coordinates
         ByteBuffer bb = ByteBuffer.allocateDirect(
                 // (# of coordinate values * 4 bytes per float)
-                playerCoords.length * 4);
+                bulletCoords.length * 4);
         bb.order(ByteOrder.nativeOrder());
         vertexBuffer = bb.asFloatBuffer();
-        vertexBuffer.put(playerCoords);
+        vertexBuffer.put(bulletCoords);
         vertexBuffer.position(0);
 
         // initialize byte buffer for the draw list

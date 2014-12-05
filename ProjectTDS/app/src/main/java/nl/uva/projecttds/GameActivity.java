@@ -3,9 +3,12 @@ package nl.uva.projecttds;
 import android.app.Activity;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 
 
 public class GameActivity extends Activity
@@ -32,6 +35,9 @@ public class GameActivity extends Activity
 
         gameGLSurfaceView = new GameGLSurfaceView(this);
         setContentView(gameGLSurfaceView);
+
+        //FrameLayout rootLayout = (FrameLayout)findViewById(android.R.id.content);
+        //View.inflate(this, R.layout.game_interface, rootLayout);
     }
 
     @Override

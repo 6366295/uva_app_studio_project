@@ -1,8 +1,14 @@
 package nl.uva.projecttds;
 
+import android.app.Activity;
 import android.content.Context;
 import android.opengl.GLSurfaceView;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 
 public class GameGLSurfaceView extends GLSurfaceView
