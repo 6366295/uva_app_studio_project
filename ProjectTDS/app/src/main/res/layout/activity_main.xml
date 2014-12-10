@@ -25,4 +25,13 @@
         android:id="@+id/start_button"
         android:onClick="gameButton" />
 
+    <Button
+        android:text="High Scores"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button"
+        android:onClick="scoreButton"
+        android:layout_below="@+id/start_button"
+        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>

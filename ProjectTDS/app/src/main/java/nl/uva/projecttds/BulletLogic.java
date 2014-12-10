@@ -1,12 +1,9 @@
 package nl.uva.projecttds;
 
 import android.opengl.Matrix;
-import android.util.Log;
 
 public class BulletLogic
 {
-    private static final String TAG = "MyGLRenderer";
-
     public int spawned, progress;
     public float initialX, initialY;
     public float posX, posY;
@@ -75,10 +72,6 @@ public class BulletLogic
         {
             enemyLogic.hit += 1;
             return true;
-            //Log.v(TAG, "x1=" + enemyLogic.posX);
-            //Log.v(TAG, "y1=" + enemyLogic.posY);
-            //Log.v(TAG, "x2=" + posX);
-            //Log.v(TAG, "y2=" + posY);
         }
         else
         {

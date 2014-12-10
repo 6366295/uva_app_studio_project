@@ -1,14 +1,20 @@
+/* * *
+ * Name: Mike Trieu
+ * Student-ID: 6366295 / 10105093
+ *
+ * GameActivity.java
+ *
+ * Create and set/display GLSurfaceView
+ * */
+
 package nl.uva.projecttds;
 
 import android.app.Activity;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.FrameLayout;
 
 
 public class GameActivity extends Activity

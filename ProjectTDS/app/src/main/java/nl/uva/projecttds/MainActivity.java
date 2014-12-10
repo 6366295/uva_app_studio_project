@@ -1,3 +1,12 @@
+/* * *
+ * Name: Mike Trieu
+ * Student-ID: 6366295 / 10105093
+ *
+ * MainActivity.java
+ *
+ * First activity
+ * */
+
 package nl.uva.projecttds;
 
 import android.app.Activity;
@@ -52,10 +61,17 @@ public class MainActivity extends Activity
     {
     }
 
-    // Start new activity
+    // Function for button in xml
     public void gameButton(View view)
     {
         Intent intent = new Intent(this, GameActivity.class);
+        startActivity(intent);
+    }
+
+    // Function for button in xml
+    public void scoreButton(View view)
+    {
+        Intent intent = new Intent(this, HighScoreActivity.class);
         startActivity(intent);
     }
 

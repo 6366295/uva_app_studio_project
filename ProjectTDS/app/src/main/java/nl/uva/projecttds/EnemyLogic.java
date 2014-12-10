@@ -23,6 +23,9 @@ public class EnemyLogic
         progressX = 0;
         progressY = 0;
 
+        width = 100;
+        height = 100;
+
         hit = 0;
         score = 100;
         hitplayer = false;

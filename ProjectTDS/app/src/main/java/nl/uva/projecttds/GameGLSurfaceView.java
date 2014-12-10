@@ -1,21 +1,30 @@
+/* * *
+ * Name: Mike Trieu
+ * Student-ID: 6366295 / 10105093
+ *
+ * GameGLSurfaceView.java
+ *
+ * Create and set/display GLRenderer
+ * Also handles display input
+ * */
+
 package nl.uva.projecttds;
 
-import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.opengl.GLSurfaceView;
-import android.util.Log;
-import android.view.LayoutInflater;
+import android.os.Handler;
+import android.os.Message;
 import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 
 public class GameGLSurfaceView extends GLSurfaceView
 {
     private final GameGLRenderer gameRenderer;
 
-    public GameGLSurfaceView(Context context)
+    public final static String EXTRA_MESSAGE = "nl.uva.projecttds.MESSAGE";
+
+    public GameGLSurfaceView(final Context context)
     {
         super(context);
 
@@ -25,38 +34,55 @@ public class GameGLSurfaceView extends GLSurfaceView
         // Set the Renderer for drawing on the GLSurfaceView
         gameRenderer = new GameGLRenderer();
         setRenderer(gameRenderer);
+
+        // Create handler to handle messages from GameGLRenderer
+        // In this case: when the player is dead and send highscore
+        gameRenderer.receiveMessage(new Handler() {
+            public void handleMessage(Message msg) {
+                if (msg.what == gameRenderer.GAME_OVER) {
+                    // Start GameOverActivity and pass the highscore to that activity
+                    Intent intent = new Intent(context, GameOverActivity.class);
+                    intent.putExtra(EXTRA_MESSAGE, String.valueOf(msg.arg1));
+                    context.startActivity(intent);
+                }
+            }
+        });
     }
 
-
+    // Function for TouchEvents
     private float previousX;
     private float previousY;
 
     @Override
     public boolean onTouchEvent(MotionEvent e)
     {
+        // Get current touch coordinates
         float x = e.getX();
         float y = e.getY();
 
-        switch (e.getAction()) {
+        // Various touch actions
+        switch (e.getAction())
+        {
+            // Set player as selected, if selected
             case MotionEvent.ACTION_DOWN:
-                // Set player as selected
-                // TODO works only for 1280x720 sceen for now
                 if(x < (gameRenderer.playerLogic.playerX + 120f) &&
                         x > (gameRenderer.playerLogic.playerX - 120f) &&
                         y < (gameRenderer.playerLogic.playerY + 120f) &&
                         y > (gameRenderer.playerLogic.playerY - 120f))
                 {
-                    gameRenderer.playerLogic.selected = 0;
+                    gameRenderer.playerLogic.selected = gameRenderer.playerLogic.IS_SELECTED;
 
                     break;
                 }
 
                 break;
+            // Set player as unselected, if screen is not touched
             case MotionEvent.ACTION_UP:
                 // Deselect player
-                gameRenderer.playerLogic.selected = 1;
+                gameRenderer.playerLogic.selected = gameRenderer.playerLogic.NOT_SELECTED;
 
                 break;
+            // When moving player, set coordinates for moving
             case MotionEvent.ACTION_MOVE:
                 float dx = x - previousX;
                 float dy = y - previousY;
@@ -65,12 +91,25 @@ public class GameGLSurfaceView extends GLSurfaceView
                 if(gameRenderer.playerLogic.selected == 0)
                 {
                     // Set translation coordinates for translation matrix
-                    gameRenderer.setPointX(gameRenderer.getPointX() + dx);
-                    gameRenderer.setPointY(gameRenderer.getPointY() + dy);
+                    if(gameRenderer.getPointX() + dx > 340 || gameRenderer.getPointX() + dx < -340)
+                    {
+                        gameRenderer.setPointX(gameRenderer.getPointX());
+                    }
+                    else
+                    {
+                        gameRenderer.setPointX(gameRenderer.getPointX() + dx);
+                        gameRenderer.playerLogic.playerX += dx;
+                    }
 
-                    // Set new player coordinates
-                    gameRenderer.playerLogic.playerX += dx;
-                    gameRenderer.playerLogic.playerY += dy;
+                    if(gameRenderer.getPointY() + dy > 100 || gameRenderer.getPointY() + dy < -800)
+                    {
+                        gameRenderer.setPointY(gameRenderer.getPointY());
+                    }
+                    else
+                    {
+                        gameRenderer.setPointY(gameRenderer.getPointY() + dy);
+                        gameRenderer.playerLogic.playerY += dy;
+                    }
                 }
 
                 // Render

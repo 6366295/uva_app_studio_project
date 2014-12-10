@@ -8,8 +8,8 @@ import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
 
-public class PlayerModel {
-
+public class PlayerModel
+{
     private final String vertexShaderCode =
             "uniform mat4 uMVPMatrix;" +
             "attribute vec4 vPosition;" +
@@ -82,7 +82,8 @@ public class PlayerModel {
         GLES20.glLinkProgram(mProgram);                  // create OpenGL program executables
     }
 
-    public void draw(float[] mvpMatrix) {
+    public void draw(float[] mvpMatrix)
+    {
         // Add program to OpenGL environment
         GLES20.glUseProgram(mProgram);
 

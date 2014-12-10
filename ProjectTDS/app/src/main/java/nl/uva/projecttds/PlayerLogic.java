@@ -1,18 +1,19 @@
 package nl.uva.projecttds;
 
 import android.opengl.Matrix;
-import android.util.Log;
+
 
 public class PlayerLogic
 {
-    private static final String TAG = "MyGLRenderer";
+    public static final int IS_SELECTED = 0;
+    public static final int NOT_SELECTED = 1;
 
     public int selected, score, hit, hp;
     public float playerX, playerY;
 
     public PlayerLogic()
     {
-        selected = 1;
+        selected = NOT_SELECTED;
         playerX = 360f;
         playerY = 1000f;
 
