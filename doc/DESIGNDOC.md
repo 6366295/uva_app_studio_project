@@ -38,4 +38,4 @@ Database
 | Name | Score |
 |------|-------|
 | AAA  | 10000 |
-| BBB  | dutch |
+| BBB  |  5000 |
