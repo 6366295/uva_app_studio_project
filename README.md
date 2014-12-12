@@ -3,28 +3,33 @@ Student's Choice (Android)
 
 The project is an autoscrolling top down shooter for Android
 
+
 Features
 --------
 
 * Menu screen (activity, first screen)
 * Highscores screen (activity)
-* Choose level screen (activity)
-* Tutorial screen (activity)
 * Game screen (activity)
+    * Game Over (activity)
     * Displays score when player finished a level
-* Pause screen
-* Sound:
-    * Background music
-    * Sound effects
 * Controls:
     * 2D touch-controls in a 3D drawn plane 
 * Player object:
-    * Life bar
     * Player object automaticly shoots bullets when touching the screen
-    * Special weapon, which player can choose to use
 * Enemy object:
     * Enemies move in a set pattern
     * Enemies are Worth points when destroyed
+
+
+Dropped Features
+----------------
+
+* Tutorial screen (activity)
+* Choose level screen (activity)
+* Music and Sound effects
+* Shooting enemies
+* Life bar
+
 
 Wireframes
 ----------
@@ -35,38 +40,25 @@ Menu screen:
 
 ![Menu screen](https://raw.githubusercontent.com/6366295/uva_app_studio_project/master/doc/images/menuscreen.png)
 
-The screen above connects to the following three screens:
-
-Choose level screen:
-
-![Choose level screen](https://raw.githubusercontent.com/6366295/uva_app_studio_project/master/doc/images/chooselevelscreen.png)
+The screen above connects to the following two screens:
 
 Highscore screen:
 
 ![Highscore screen](https://raw.githubusercontent.com/6366295/uva_app_studio_project/master/doc/images/highscorescreen.png)
 
-Tutorial screen:
-
-![Tutorial screen](https://raw.githubusercontent.com/6366295/uva_app_studio_project/master/doc/images/tutorialscreen.png)
-
-The Choose level screen connects to the game screen
-
 Game screen:
 
 ![Game screen](https://raw.githubusercontent.com/6366295/uva_app_studio_project/master/doc/images/gamescreen.png)
 
-The game screen can be paused
+The Game Over screen connects to Game screen
 
-Pause screen:
+![Game Over screen](https://raw.githubusercontent.com/6366295/uva_app_studio_project/master/doc/images/gameover.png)
 
-![Pause screen](https://raw.githubusercontent.com/6366295/uva_app_studio_project/master/doc/images/pausescreen.png)
 
 Frameworks, libraries
 ---------------------
 
 * Android API level 15 (4.0.3)
 * OpenGL ES 2.0
-* Media Playback
 * Data Storage (SQLite)
 * Touchscreen
-* Motion Sensor (Maybe, for special weapon)
