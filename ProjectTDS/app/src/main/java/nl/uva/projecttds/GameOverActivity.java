@@ -4,7 +4,9 @@
  *
  * GameOverActivity.java
  *
- * Displays highscore
+ * Displays final score
+ * Enters that score and player name to database
+ * Also contains functions for the buttons in activity_game_over.xml
  * */
 
 package nl.uva.projecttds;
@@ -14,7 +16,6 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -30,6 +31,7 @@ public class GameOverActivity extends Activity
     {
         super.onCreate(savedInstanceState);
 
+        TextView scoreView;
         View decorView;
         int uiOptions;
 
@@ -45,13 +47,13 @@ public class GameOverActivity extends Activity
 
         setContentView(R.layout.activity_game_over);
 
-        // Receive intent with highscore string
+        // Receive score from GameGlSurfaceView.java
         Intent intent = getIntent();
         String message = intent.getStringExtra(GameGLSurfaceView.EXTRA_MESSAGE);
 
-        // Set highscore string to a text view
-        TextView score = (TextView) findViewById(R.id.score_view);
-        score.setText(message);
+        // Display high score
+        scoreView = (TextView) findViewById(R.id.score_view);
+        scoreView.setText(message);
     }
 
     @Override
@@ -75,46 +77,63 @@ public class GameOverActivity extends Activity
     {
     }
 
-    // Function for button in xml
+    // Save high score and player name
     public void saveButton(View view)
     {
-        HighScoreDatabase dbHelper = new HighScoreDatabase(this);
+        Button saveButton, replayButton, mainButton;
+        HighScoreDatabase dbHelper;
+        SQLiteDatabase db;
+        TextView score;
+        EditText name;
+        long newRowId;
 
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        // Get database
+        dbHelper = new HighScoreDatabase(this);
 
-        TextView score = (TextView) findViewById(R.id.score_view);
-        EditText name = (EditText) findViewById(R.id.editText);
+        db = dbHelper.getWritableDatabase();
 
+        score = (TextView) findViewById(R.id.score_view);
+        name = (EditText) findViewById(R.id.editText);
+
+        // Insert player name and high score to database
         ContentValues values = new ContentValues();
-        values.put(HighScoreDatabase.COLUMN_NAME_NAME, name.getText().toString());
-        values.put(HighScoreDatabase.COLUMN_NAME_SCORE, score.getText().toString());
+        values.put(
+                HighScoreDatabase.COLUMN_NAME_NAME, name.getText().toString()
+        );
+        values.put(
+                HighScoreDatabase.COLUMN_NAME_SCORE, score.getText().toString()
+        );
 
-        long newRowId = db.insert(
+        newRowId = db.insert(
                 HighScoreDatabase.TABLE_NAME,
                 HighScoreDatabase.COLUMN_NAME_NAME,
                 values);
 
-        Button button = (Button) findViewById(R.id.save_score);
-        Button button2 = (Button) findViewById(R.id.replay);
-        Button button3 = (Button) findViewById(R.id.main);
-        button.setVisibility(View.GONE);
+        // Display and hide some buttons
+        saveButton = (Button) findViewById(R.id.save_score);
+        replayButton = (Button) findViewById(R.id.replay);
+        mainButton = (Button) findViewById(R.id.main);
+
+        saveButton.setVisibility(View.GONE);
         name.setVisibility(View.GONE);
 
-        button2.setVisibility(View.VISIBLE);
-        button3.setVisibility(View.VISIBLE);
+        replayButton.setVisibility(View.VISIBLE);
+        mainButton.setVisibility(View.VISIBLE);
     }
 
-    // Function for button in xml
+    // Replay game
     public void replayButton(View view)
     {
         Intent intent = new Intent(this, GameActivity.class);
         startActivity(intent);
+        finish();
     }
 
-    // Function for button in xml
+    // Go to MainActivity
     public void mainButton(View view)
     {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+        finish();
     }
 }

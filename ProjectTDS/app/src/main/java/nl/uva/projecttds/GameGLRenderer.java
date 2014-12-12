@@ -1,3 +1,15 @@
+/* * *
+ * Name: Mike Trieu
+ * Student-ID: 6366295 / 10105093
+ *
+ * GameGLRenderer.java
+ *
+ * Draws game objects and do some game logic stuff
+ *
+ * loadShader and checkGLError source:
+ *   http://developer.android.com/training/graphics/opengl/index.html
+ * */
+
 package nl.uva.projecttds;
 
 import android.opengl.GLES20;
@@ -73,22 +85,34 @@ public class GameGLRenderer implements GLSurfaceView.Renderer
 
         // Draw bullet
         Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
-        bulletLogic.animateBullet(bulletModel, mMVPMatrix, playerLogic.selected, playerLogic.playerX, playerLogic.playerY, 50);
+        bulletLogic.animateBullet(
+                bulletModel, mMVPMatrix, playerLogic.selected,
+                playerLogic.playerX, playerLogic.playerY, 50
+        );
 
         // Draw enemy
         Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
-        enemyLogic.animateEnemy(enemyModel, mMVPMatrix, -50, 100, 10, 60, 60, 120);
+        enemyLogic.animateEnemy(enemyModel, mMVPMatrix,
+                -50, 100, 10, 60, 60, 120, E_POINTS
+        );
 
         Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
-        enemyLogic2.animateEnemy(enemyModel, mMVPMatrix, -50, 100, 10, 180, 60, 300);
+        enemyLogic2.animateEnemy(enemyModel, mMVPMatrix,
+                -50, 100, 10, 180, 60, 300, E_POINTS
+        );
 
         Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
-        enemyLogic3.animateEnemy(enemyModel, mMVPMatrix, 770, 100, -10, 60, 60, -120);
+        enemyLogic3.animateEnemy(enemyModel, mMVPMatrix,
+                770, 100, -10, 60, 60, -120, E_POINTS
+        );
 
         Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
-        enemyLogic4.animateEnemy(enemyModel, mMVPMatrix, 770, 100, -10, 180, 60, -300);
+        enemyLogic4.animateEnemy(enemyModel, mMVPMatrix,
+                770, 100, -10, 180, 60, -300, E_POINTS
+        );
 
 
+        // Hit and score logic
         boolean a = bulletLogic.bulletHit(enemyLogic);
         if(a == true)
         {
@@ -120,34 +144,38 @@ public class GameGLRenderer implements GLSurfaceView.Renderer
             bulletLogic.hit = true;
         }
 
+        // Sets enemyLogic.hitplayer to true;
         enemyLogic.checkIfHit(playerLogic);
         enemyLogic2.checkIfHit(playerLogic);
         enemyLogic3.checkIfHit(playerLogic);
         enemyLogic4.checkIfHit(playerLogic);
 
+        // Player life logic
         if(playerLogic.hit == 1)
         {
             playerLogic.hp -= 1;
             playerLogic.hit = 0;
         }
 
+        // Game over logic
         if(playerLogic.hp < 0)
         {
             if(handler!=null){
-                // do calculation using GL handle
+                // Send message to GameGLSurfaceView that game is over
                 int flag = GameGLRenderer.GAME_OVER;
-                handler.dispatchMessage(Message.obtain(handler, flag, playerLogic.score, 0));
-                // adds a message to the UI thread's message queue
+                handler.dispatchMessage(
+                        Message.obtain(handler, flag, playerLogic.score, 0)
+                );
 
                 handler = null;
-
             }
         }
 
-        if((enemyLogic.hit > E_POINTS || enemyLogic.hitplayer == true) &&
-                (enemyLogic2.hit > E_POINTS || enemyLogic2.hitplayer == true) &&
-                (enemyLogic3.hit > E_POINTS || enemyLogic3.hitplayer == true) &&
-                (enemyLogic4.hit > E_POINTS || enemyLogic4.hitplayer == true))
+        // Respawn enemy, when every enemy is dead
+        if((enemyLogic.hit >= E_POINTS || enemyLogic.hitplayer == true) &&
+                (enemyLogic2.hit >= E_POINTS || enemyLogic2.hitplayer == true) &&
+                (enemyLogic3.hit >= E_POINTS || enemyLogic3.hitplayer == true) &&
+                (enemyLogic4.hit >= E_POINTS || enemyLogic4.hitplayer == true))
         {
             enemyLogic.resetEnemy();
             enemyLogic2.resetEnemy();

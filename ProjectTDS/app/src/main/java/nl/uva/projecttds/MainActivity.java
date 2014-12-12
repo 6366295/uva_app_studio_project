@@ -4,7 +4,7 @@
  *
  * MainActivity.java
  *
- * First activity
+ * Contains functions for the two buttons in activity_main.xml
  * */
 
 package nl.uva.projecttds;
@@ -54,25 +54,24 @@ public class MainActivity extends Activity
         decorView.setSystemUiVisibility(uiOptions);
     }
 
-
     // Disable back button
     @Override
     public void onBackPressed()
     {
     }
 
-    // Function for button in xml
+    // Go to game
     public void gameButton(View view)
     {
         Intent intent = new Intent(this, GameActivity.class);
         startActivity(intent);
+        finish();
     }
 
-    // Function for button in xml
+    // Go to high score list
     public void scoreButton(View view)
     {
         Intent intent = new Intent(this, HighScoreActivity.class);
         startActivity(intent);
     }
-
 }

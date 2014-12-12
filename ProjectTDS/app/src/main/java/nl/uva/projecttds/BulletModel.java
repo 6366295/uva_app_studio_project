@@ -1,3 +1,15 @@
+/* * *
+ * Name: Mike Trieu
+ * Student-ID: 6366295 / 10105093
+ *
+ * BulletModel.java
+ *
+ * Model and draw function for bullets
+ *
+ * Source of everything except model shape (bulletCoords[]):
+ *   http://developer.android.com/training/graphics/opengl/index.html
+ * */
+
 package nl.uva.projecttds;
 
 import android.opengl.GLES20;
@@ -8,7 +20,8 @@ import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
 
-public class BulletModel {
+public class BulletModel
+{
 
     private final String vertexShaderCode =
             "uniform mat4 uMVPMatrix;" +
@@ -49,7 +62,8 @@ public class BulletModel {
     /**
      * Sets up the drawing object data for use in an OpenGL ES context.
      */
-    public BulletModel() {
+    public BulletModel()
+    {
         // initialize vertex byte buffer for shape coordinates
         ByteBuffer bb = ByteBuffer.allocateDirect(
                 // (# of coordinate values * 4 bytes per float)
@@ -82,7 +96,8 @@ public class BulletModel {
         GLES20.glLinkProgram(mProgram);                  // create OpenGL program executables
     }
 
-    public void draw(float[] mvpMatrix) {
+    public void draw(float[] mvpMatrix)
+    {
         // Add program to OpenGL environment
         GLES20.glUseProgram(mProgram);
 
@@ -120,5 +135,4 @@ public class BulletModel {
         // Disable vertex array
         GLES20.glDisableVertexAttribArray(mPositionHandle);
     }
-
 }

@@ -37,10 +37,14 @@ public class GameGLSurfaceView extends GLSurfaceView
 
         // Create handler to handle messages from GameGLRenderer
         // In this case: when the player is dead and send highscore
-        gameRenderer.receiveMessage(new Handler() {
-            public void handleMessage(Message msg) {
-                if (msg.what == gameRenderer.GAME_OVER) {
-                    // Start GameOverActivity and pass the highscore to that activity
+        gameRenderer.receiveMessage(new Handler()
+        {
+            public void handleMessage(Message msg)
+            {
+                if(msg.what == gameRenderer.GAME_OVER)
+                {
+                    // Start GameOverActivity
+                    // And pass the high score to that activity
                     Intent intent = new Intent(context, GameOverActivity.class);
                     intent.putExtra(EXTRA_MESSAGE, String.valueOf(msg.arg1));
                     context.startActivity(intent);
@@ -56,21 +60,33 @@ public class GameGLSurfaceView extends GLSurfaceView
     @Override
     public boolean onTouchEvent(MotionEvent e)
     {
+        float x, y, dx, dy;
+        float touchMargin;
+        float playerX, playerY;
+        int isSelected, notSelected;
+
         // Get current touch coordinates
-        float x = e.getX();
-        float y = e.getY();
+        x = e.getX();
+        y = e.getY();
+
+        isSelected = gameRenderer.playerLogic.IS_SELECTED;
+        notSelected = gameRenderer.playerLogic.NOT_SELECTED;
 
         // Various touch actions
         switch (e.getAction())
         {
             // Set player as selected, if selected
             case MotionEvent.ACTION_DOWN:
-                if(x < (gameRenderer.playerLogic.playerX + 120f) &&
-                        x > (gameRenderer.playerLogic.playerX - 120f) &&
-                        y < (gameRenderer.playerLogic.playerY + 120f) &&
-                        y > (gameRenderer.playerLogic.playerY - 120f))
+                touchMargin = gameRenderer.playerLogic.TOUCH_MARGIN;
+                playerX = gameRenderer.playerLogic.playerX;
+                playerY = gameRenderer.playerLogic.playerY;
+
+                if(x < (playerX + touchMargin) &&
+                        x > (playerX - touchMargin) &&
+                        y < (playerY + touchMargin) &&
+                        y > (playerY - touchMargin))
                 {
-                    gameRenderer.playerLogic.selected = gameRenderer.playerLogic.IS_SELECTED;
+                    gameRenderer.playerLogic.selected = isSelected;
 
                     break;
                 }
@@ -79,29 +95,33 @@ public class GameGLSurfaceView extends GLSurfaceView
             // Set player as unselected, if screen is not touched
             case MotionEvent.ACTION_UP:
                 // Deselect player
-                gameRenderer.playerLogic.selected = gameRenderer.playerLogic.NOT_SELECTED;
+                gameRenderer.playerLogic.selected = notSelected;
 
                 break;
             // When moving player, set coordinates for moving
             case MotionEvent.ACTION_MOVE:
-                float dx = x - previousX;
-                float dy = y - previousY;
+                dx = x - previousX;
+                dy = y - previousY;
 
                 // Move only if player is selected
-                if(gameRenderer.playerLogic.selected == 0)
+                if(gameRenderer.playerLogic.selected == isSelected)
                 {
-                    // Set translation coordinates for translation matrix
-                    if(gameRenderer.getPointX() + dx > 340 || gameRenderer.getPointX() + dx < -340)
+                    // Set same x position, if it's outside the border
+                    if(gameRenderer.getPointX() + dx > 340 ||
+                            gameRenderer.getPointX() + dx < -340)
                     {
                         gameRenderer.setPointX(gameRenderer.getPointX());
                     }
+                    // Set new x position for translation matrix and player logic
                     else
                     {
                         gameRenderer.setPointX(gameRenderer.getPointX() + dx);
                         gameRenderer.playerLogic.playerX += dx;
                     }
 
-                    if(gameRenderer.getPointY() + dy > 100 || gameRenderer.getPointY() + dy < -800)
+                    // y position version
+                    if(gameRenderer.getPointY() + dy > 100 ||
+                            gameRenderer.getPointY() + dy < -900)
                     {
                         gameRenderer.setPointY(gameRenderer.getPointY());
                     }
@@ -112,7 +132,7 @@ public class GameGLSurfaceView extends GLSurfaceView
                     }
                 }
 
-                // Render
+                // Render new scene
                 requestRender();
 
                 break;

@@ -1,3 +1,15 @@
+/* * *
+ * Name: Mike Trieu
+ * Student-ID: 6366295 / 10105093
+ *
+ * PlayerModel.java
+ *
+ * Model and draw function for bullets
+ *
+ * Source of everything except model shape (playerCoords[]):
+ *   http://developer.android.com/training/graphics/opengl/index.html
+ * */
+
 package nl.uva.projecttds;
 
 import android.opengl.GLES20;
@@ -49,7 +61,8 @@ public class PlayerModel
     /**
      * Sets up the drawing object data for use in an OpenGL ES context.
      */
-    public PlayerModel() {
+    public PlayerModel()
+    {
         // initialize vertex byte buffer for shape coordinates
         ByteBuffer bb = ByteBuffer.allocateDirect(
                 // (# of coordinate values * 4 bytes per float)

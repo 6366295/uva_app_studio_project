@@ -15,6 +15,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 
 
 public class GameActivity extends Activity
@@ -42,8 +44,8 @@ public class GameActivity extends Activity
         gameGLSurfaceView = new GameGLSurfaceView(this);
         setContentView(gameGLSurfaceView);
 
-        //FrameLayout rootLayout = (FrameLayout)findViewById(android.R.id.content);
-        //View.inflate(this, R.layout.game_interface, rootLayout);
+        FrameLayout rootLayout = (FrameLayout)findViewById(android.R.id.content);
+        View.inflate(this, R.layout.game_interface, rootLayout);
     }
 
     @Override
