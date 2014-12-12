@@ -7,15 +7,18 @@ Classes
 -------
 
 * MainActivity
-* HighscoreActivity
-* TutorialActivity
+* HighScoreActivity
+    * HighScoreDatabase
 * GameActivity
-* GLSufaceView Class
-* GLRenderere Class
-* Player Class
-* Life Class
-* Enemy Class
-* Music Class
+    * GameGLSurfaceView
+    * GameGLRenderer
+        * PlayerModel
+        * BulletModel
+        * EnemyModel
+        * PlayerLogic
+        * BulletLogic
+        * EnemyLogic
+* GameOverActivity
 
 Advanced Sketch
 ---------------
@@ -26,7 +29,6 @@ APIs, Frameworks
 
 * Android API level 15 (4.0.3)
 * OpenGL ES 2.0
-* Media Playback
 * Data Storage (SQLite)
 * Touchscreen
 
